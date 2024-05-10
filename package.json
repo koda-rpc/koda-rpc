@@ -1,0 +1,27 @@
+{
+  "name": "koda-rpc",
+  "private": true,
+  "description": "Fast, Lightweight and Secure RPC protocol",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "Daniil Benger (tori-getz)",
+  "homepage": "https://koda-rpc.github.io",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/koda-rpc/koda-rpc"
+  },
+  "packageManager": "yarn@4.2.2",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "prepare": "husky",
+    "commitlint": "commitlint --edit",
+    "dev": "yarn workspaces foreach -Api run dev"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "husky": "^9.0.11"
+  }
+}

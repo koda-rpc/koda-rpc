@@ -1,0 +1,23 @@
+{
+  "name": "@koda-rpc/parser",
+  "description": "KodaRPC Parser",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "Daniil Benger (tori-getz)",
+  "homepage": "https://koda-rpc.github.io",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/koda-rpc/koda-rpc"
+  },
+  "main": "dist/index.js",
+  "packageManager": "yarn@4.2.2",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "tsc -w"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}
