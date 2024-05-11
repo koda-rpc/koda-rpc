@@ -1,7 +1,7 @@
 svc PetService {
   getById(id: number): Pet;
   getByOwner(owner: Owner): Pet;
-  createPet(dto: Pet, foo?: number): Pet;
+  createPet(dto: Pet, foo: number): Pet;
 }
 
 contract Pet {

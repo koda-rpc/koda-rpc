@@ -1,8 +1,8 @@
 # Compile binary from KodaRPC schema with call signature
 ```bash
 kodarpc compile schema \
-  -c PetService.getById \
-  -type request \
-  -p '14' \
-  -o request.bin
+  --call-signature PetService.createPet \
+  --type request \
+  --parameters '{"id": 12, "name": "john", "owner": { "id": 1, "name" : "beria" }}, 14' \
+  --output request.bin
 ```
