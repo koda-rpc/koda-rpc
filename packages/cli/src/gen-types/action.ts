@@ -14,7 +14,7 @@ export const genTypesAction = (
   const schemaContent = fs.readFileSync(normalizePath(withExtension(schemaPath, '.kodarpc')), 'utf-8');
   const parsedSchema = parseSchema(schemaContent);
 
-  const tsSchema = codegen(parsedSchema);
+  const tsSchema = codegen(parsedSchema, schemaContent);
   
   if (!options.output) {
     console.log(tsSchema);
