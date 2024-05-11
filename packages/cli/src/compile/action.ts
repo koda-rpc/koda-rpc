@@ -24,7 +24,7 @@ export const compileAction = (
     throw new Error(`${options.type} is invalid compile type`);
   }
 
-  console.log(JSON.stringify(schema));
+  console.log(schema.services[0].methods[2].parameters);
 
   validateParams(
     normalizeParams(options.parameters),
