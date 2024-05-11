@@ -18,7 +18,7 @@ program
   .action(genTypesAction);
 
 program
-  .command('compile')
+  .command('serialize')
   .description('Compile request from KodaRPC schema')
   .argument('<path-to-schema>', 'Path to KodaRPC Schema')
   .option('-c, --call-method <string>', 'Service and method names. Format: Service.method')

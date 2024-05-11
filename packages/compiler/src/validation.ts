@@ -41,6 +41,27 @@ export const validateParams = async (
   }
 };
 
+export const validateReturnData = (
+  returnData: unknown,
+  schema: Schema,
+  callMethod: string,
+) => {
+  const method = findMethodInSchema(callMethod, schema);
+
+  if (typeof returnData === 'object') {
+    validateContract(
+      returnData,
+      method.returnType,
+      schema,
+    );
+    return;
+  }
+  
+  if (typeof returnData !== method.returnType) {
+    throw new TypeError(`${callMethod} return data expects type ${method.returnType}, but returns ${typeof returnData}`)
+  }
+}
+
 export const validateContract = (
   param: object,
   contractName: string,

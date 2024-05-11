@@ -1,9 +1,9 @@
 import {
   compile,
-  validateParams,
   getCompileType,
 } from "@koda-rpc/compiler";
-import { readSchema } from "../utils";
+import * as fs from 'fs-extra';
+import { normalizePath, readSchema, withExtension } from "../utils";
 import { normalizeParams } from "./normalizeParams";
 import { CompileType } from "@koda-rpc/common";
 
@@ -30,5 +30,24 @@ export const serializeAction = (
     compileType: compileType as CompileType,
     parameters: normalizeParams(options.parameters),
     schema,
+  }).then(buffer => {
+    const json = {
+      type: 'request',
+      callMethod: options.callMethod,
+      parameters: normalizeParams(options.parameters),
+    }
+    const jsonBuffer = Buffer.from(JSON.stringify(json));
+    
+    console.log(`JSON ${Buffer.byteLength(jsonBuffer)} bytes`);
+    console.log(jsonBuffer, '\n');
+    console.log(`Buffer ${Buffer.byteLength(buffer)} bytes`);
+    console.log(buffer, '\n');
+
+    if (options.output) {
+      fs.writeFileSync(
+        normalizePath(options.output),
+        buffer
+      );
+    }
   });
 };

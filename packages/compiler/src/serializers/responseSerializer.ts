@@ -1,22 +1,22 @@
 import { MessageTypeBytes, OperationBytes } from "@koda-rpc/common";
 import { objectSerializer } from "./objectSerializer";
 
-interface IRequestSerializerParams {
+interface IResponseSerializer {
   callMethod: string;
   parameters: Array<unknown>;
 }
 
-export const requestSerializer = async ({
+export const responseSerializer = async ({
   callMethod,
   parameters,
-}: IRequestSerializerParams): Promise<Buffer> => {
+}: IResponseSerializer): Promise<Buffer> => {
   let buffer = Buffer.alloc(0);
 
   // Установка типа сообщения
   buffer = Buffer.concat([
     buffer,
     Buffer.from([OperationBytes.MESSAGE_TYPE]),
-    Buffer.from([MessageTypeBytes.REQUEST])
+    Buffer.from([MessageTypeBytes.RESPONSE])
   ]);
 
   // Установка вызываемого метода
@@ -26,16 +26,25 @@ export const requestSerializer = async ({
     Buffer.from(callMethod),
   ]);
 
-  // Установка параметров
-  parameters.forEach((parameter: object) => {
-    buffer = Buffer.concat([buffer, Buffer.from([OperationBytes.START_PARAMETER])]);
+  // Возвращаемые данные
+  const [returnData] = parameters;
 
-    if (typeof parameter !== 'object') {
-      buffer = Buffer.concat([buffer, Buffer.from([parameter])]);
-    } else {
-      buffer = Buffer.concat([buffer, objectSerializer(parameter)]); 
-    }
-  });
+  buffer = Buffer.concat([
+    buffer,
+    Buffer.from([OperationBytes.START_RETURN_DATA])
+  ])
+  
+  if (typeof returnData === 'object') {
+    buffer = Buffer.concat([
+      buffer,
+      objectSerializer(returnData)
+    ]);
+  } else {
+    buffer = Buffer.concat([
+      buffer,
+      Buffer.from([returnData as any])
+    ]);
+  }
 
   return buffer;
 }

@@ -1,5 +1,7 @@
 import { Schema, CompileType } from "@koda-rpc/common";
-import { validateParams } from "./validation";
+import { validateParams, validateReturnData } from "./validation";
+import { requestSerializer } from "./serializers";
+import { responseSerializer } from "./serializers/responseSerializer";
 
 export interface ICompileOptions {
   callMethod: string;
@@ -14,9 +16,35 @@ export const compile = async ({
   parameters,
   schema,
 }: ICompileOptions) => {
-  await validateParams(
-    parameters,
-    schema,
-    callMethod,
-  );
+  let buffer: Buffer;
+
+  if (compileType === CompileType.REQUEST) {
+    await validateParams(
+      parameters,
+      schema,
+      callMethod,
+    );
+
+    buffer = await requestSerializer({
+      callMethod,
+      parameters,
+    });
+  }
+
+  if (compileType === CompileType.RESPONSE) {
+    const [returnData] = parameters;
+    
+    await validateReturnData(
+      returnData,
+      schema,
+      callMethod,
+    );
+
+    buffer = await responseSerializer({
+      callMethod,
+      parameters,
+    });
+  }
+
+  return buffer;
 };
