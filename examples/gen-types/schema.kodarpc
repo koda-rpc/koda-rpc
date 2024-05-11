@@ -1,0 +1,10 @@
+svc PetService {
+  getById(id: number): Pet;
+}
+
+contract Pet {
+  number id;
+  string name;
+  boolean hello;
+  Pet pet;
+}
