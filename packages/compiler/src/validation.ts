@@ -1,12 +1,19 @@
 import { Schema, findContractInSchema } from "@koda-rpc/common";
 import { findMethodInSchema } from "@koda-rpc/common";
 
-export const validateParams = (
+export const validateParams = async (
   params: Array<unknown>,
   schema: Schema,
-  callSignature: string
+  callMethod: string
 ) => {
-  const method = findMethodInSchema(callSignature, schema);
+  const method = findMethodInSchema(callMethod, schema);
+
+  let requiredParams = method.parameters.reduce((acc, item) => {
+    if (item.required) {
+      acc.push(item.name);
+    }
+    return acc;
+  }, []);
 
   params.forEach((param, index) => {
     const methodParam = method.parameters[index];
@@ -17,13 +24,21 @@ export const validateParams = (
         methodParam.type,
         schema
       );
+
+      requiredParams = requiredParams.filter(requiredParam => requiredParam !== methodParam.name);
       return;
     }
     
     if (typeof param !== methodParam.type) {
       throw new TypeError(`${param} expects type ${methodParam.type}, but returns ${typeof param}`)
     }
+
+    requiredParams = requiredParams.filter(requiredParam => requiredParam !== methodParam.name);
   });
+
+  if (requiredParams.length !== 0) {
+    throw new TypeError(`${callMethod}: ${requiredParams.join(', ')} ${requiredParams.length === 1 ? 'param' : 'params'} are required!`)
+  }
 };
 
 export const validateContract = (
@@ -65,6 +80,6 @@ export const validateContract = (
   });
 
   if (requiredFields.length !== 0) {
-    throw new TypeError(`${contract.name}: ${requiredFields.join(', ')} fields are required!`)
+    throw new TypeError(`${contract.name}: ${requiredFields.join(', ')} ${requiredFields.length === 1 ? 'field' : 'fields'} are required!`)
   }
 };

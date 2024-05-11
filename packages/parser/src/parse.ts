@@ -33,9 +33,13 @@ export const parseSchema = (schema: string): Schema => {
       let parameterMatch;
       const parametersStr = methodMatch[2];
       while ((parameterMatch = parameterRegex.exec(parametersStr)) !== null) {
-        const paramName = parameterMatch[1];
-        const paramType = parameterMatch[2];
-        parameters.push(new ParameterDeclaration(paramName, paramType));
+        let paramName = parameterMatch[1];
+        let paramType = parameterMatch[2];
+
+        const required = !paramName.includes('?');
+        paramName = paramName.replaceAll('?', '');
+
+        parameters.push(new ParameterDeclaration(paramName, paramType, required));
       }
 
       methods.push(new MethodDeclaration(methodName, returnType, parameters));

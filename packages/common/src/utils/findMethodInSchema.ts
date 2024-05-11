@@ -2,10 +2,10 @@ import { MethodDeclaration } from "../declarations";
 import { Schema } from '../schema';
 
 export const findMethodInSchema = (
-  callSignature: string,
+  callMethod: string,
   schema: Schema,
 ): MethodDeclaration => {
-  const [serviceName, methodName] = callSignature.split('.');
+  const [serviceName, methodName] = callMethod.split('.');
 
   const service = schema.services.find(service => service.name === serviceName);
   if (!service) {

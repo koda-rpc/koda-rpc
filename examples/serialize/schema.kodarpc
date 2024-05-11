@@ -1,0 +1,16 @@
+svc PetService {
+  getById(id: number): Pet;
+  getByOwner(owner: Owner): Pet;
+  createPet(dto: Pet): Pet;
+}
+
+contract Pet {
+  number id;
+  string name;
+  Owner owner;
+}
+
+contract Owner {
+  number id;
+  string name;
+}

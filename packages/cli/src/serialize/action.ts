@@ -5,15 +5,16 @@ import {
 } from "@koda-rpc/compiler";
 import { readSchema } from "../utils";
 import { normalizeParams } from "./normalizeParams";
+import { CompileType } from "@koda-rpc/common";
 
 interface IOptions {
-  callSignature: string;
+  callMethod: string;
   type: string;
   parameters: string;
   output: string;
 }
 
-export const compileAction = (
+export const serializeAction = (
   schemaPath,
   options: IOptions,
 ) => {
@@ -24,20 +25,10 @@ export const compileAction = (
     throw new Error(`${options.type} is invalid compile type`);
   }
 
-  console.log(schema.services[0].methods[2].parameters);
-
-  validateParams(
-    normalizeParams(options.parameters),
+  compile({
+    callMethod: options.callMethod,
+    compileType: compileType as CompileType,
+    parameters: normalizeParams(options.parameters),
     schema,
-    options.callSignature,
-  );
-
-  // const parameters = validateParams(options.parameters, schema);
-
-  // compile({
-  //   callSignature: options.callSignature,
-  //   compileType: compileType as CompileType,
-  //   parameters: options.parameters,
-  //   schema,
-  // });
+  });
 };

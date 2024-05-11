@@ -9,3 +9,13 @@ export enum BasicTypes {
   BOOLEAN = 'boolean',
   VOID = 'void',
 }
+
+export enum OperationBytes {
+  MESSAGE_TYPE = 0x01,
+  CALL_SIGNTURE = 0x1b,
+}
+
+export enum MessageTypeBytes {
+  REQUEST = 0x11,
+  RESPONSE = 0x12
+}

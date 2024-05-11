@@ -1,30 +1,22 @@
-import { Schema } from "@koda-rpc/common";
-import { CompileType } from '@koda-rpc/common';
-import { ParametersType } from "./types";
+import { Schema, CompileType } from "@koda-rpc/common";
+import { validateParams } from "./validation";
 
-export interface ICompileOptions<P extends Function> {
-  callSignature: string;
+export interface ICompileOptions {
+  callMethod: string;
   compileType: CompileType;
-  parameters: ParametersType<P>;
+  parameters: Array<unknown>;
   schema: Schema;
 }
 
-export const compile = <P extends Function>({
-  callSignature,
+export const compile = async ({
+  callMethod,
   compileType,
   parameters,
   schema,
-}: ICompileOptions<P>) => {
-  const [serviceName, methodName] = callSignature.split('.');
-
-  const service = schema.services.find(service => service.name === serviceName);
-  if (!service) {
-    throw new Error(`Service ${serviceName} is not exists!`);
-  }
-
-  const method = service.methods.find(method => method.name === methodName);
-  if (!method) {
-    throw new Error(`Method ${methodName} is not exists!`);
-  }
-
+}: ICompileOptions) => {
+  await validateParams(
+    parameters,
+    schema,
+    callMethod,
+  );
 };
