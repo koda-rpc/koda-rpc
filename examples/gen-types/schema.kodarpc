@@ -5,6 +5,10 @@ svc PetService {
 contract Pet {
   number id;
   string name;
-  boolean hello;
-  Pet pet;
+  Owner owner;
+}
+
+contract Owner {
+  number id;
+  string name;
 }
