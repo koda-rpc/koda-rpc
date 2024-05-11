@@ -4,7 +4,8 @@ import {
   MethodDeclaration,
   ParameterDeclaration,
   ServiceDeclaration,
-} from "./declarations";
+  Schema,
+} from "@koda-rpc/common";
 import {
   contractRegex,
   fieldRegex,
@@ -12,8 +13,6 @@ import {
   parameterRegex,
   serviceRegex,
 } from "./regex";
-
-import { Schema } from "./schema";
 
 export const parseSchema = (schema: string): Schema => {
   const services: ServiceDeclaration[] = [];
@@ -49,18 +48,19 @@ export const parseSchema = (schema: string): Schema => {
   while ((match = contractRegex.exec(schema)) !== null) {
     const contractName = match[1];
 
-    let fieldMatch;
     const fieldsStr = match[2];
-
     const fields = fieldsStr
       .split('\n')
       .reduce((acc, item) => {
         if (item === '') return acc;
 
-        const [ type, name ] = item.trim().replaceAll(';', '').split(' ').filter(symbol => symbol !== ' ');
+        let [type, name] = item.trim().replaceAll(';', '').split(' ').filter(symbol => symbol !== ' ');
+
+        const required = !name.includes('?');
+        name = name.replaceAll('?', '');
 
         acc.push(
-          new FieldDeclaration(name, type),
+          new FieldDeclaration(name, type, required),
         );
 
         return acc;

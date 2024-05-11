@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 import packageJson = require('../package.json');
 import { genTypesAction } from './gen-types';
+import { compileAction } from './compile';
 
 const program = new Command();
 
@@ -14,6 +15,16 @@ program
   .description('Generate TypeScript declaration files from KodaRPC Schema')
   .argument('<path-to-schema>', 'Path to KodaRPC Schema')
   .option('-o, --output <string>', 'Path to TypeScript declaration file path', '')
-  .action(genTypesAction)
+  .action(genTypesAction);
+
+program
+  .command('compile')
+  .description('Compile request from KodaRPC schema')
+  .argument('<path-to-schema>', 'Path to KodaRPC Schema')
+  .option('-c, --call-signature <string>', 'Service and method names. Format: Service.method')
+  .option('-t, --type <string>', 'Type of compiled data, Format: request | response')
+  .option('-p, --parameters <string>', 'Method Parameters. Format: 1, {"foo": "bar"}')
+  .option('-o, --output <string>', 'Path to binary output')
+  .action(compileAction);
 
 export { program };

@@ -1,7 +1,6 @@
-import { parseSchema } from '@koda-rpc/parser';
 import * as fs from 'fs-extra';
 import { codegen } from './codegen';
-import { withExtension, normalizePath } from '../utils';
+import { withExtension, normalizePath, readSchema } from '../utils';
 
 interface IOptions {
   output: string;
@@ -11,10 +10,9 @@ export const genTypesAction = (
   schemaPath: string,
   options: IOptions,
 ) => {
-  const schemaContent = fs.readFileSync(normalizePath(withExtension(schemaPath, '.kodarpc')), 'utf-8');
-  const parsedSchema = parseSchema(schemaContent);
+  const [schema, fileContent] = readSchema(schemaPath);
 
-  const tsSchema = codegen(parsedSchema, schemaContent);
+  const tsSchema = codegen(schema, fileContent);
   
   if (!options.output) {
     console.log(tsSchema);

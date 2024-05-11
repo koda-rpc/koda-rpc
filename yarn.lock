@@ -230,6 +230,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@koda-rpc/cli@workspace:packages/cli"
   dependencies:
+    "@koda-rpc/common": "npm:0.0.1"
+    "@koda-rpc/compiler": "npm:0.0.1"
     "@koda-rpc/parser": "npm:0.0.1"
     "@types/fs-extra": "npm:^11.0.4"
     "@types/node": "npm:^20.12.11"
@@ -242,10 +244,30 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@koda-rpc/common@npm:0.0.1, @koda-rpc/common@workspace:packages/common":
+  version: 0.0.0-use.local
+  resolution: "@koda-rpc/common@workspace:packages/common"
+  dependencies:
+    typescript: "npm:^5.4.5"
+  languageName: unknown
+  linkType: soft
+
+"@koda-rpc/compiler@npm:0.0.1, @koda-rpc/compiler@workspace:packages/compiler":
+  version: 0.0.0-use.local
+  resolution: "@koda-rpc/compiler@workspace:packages/compiler"
+  dependencies:
+    "@koda-rpc/common": "npm:0.0.1"
+    "@koda-rpc/parser": "npm:0.0.1"
+    ts-pattern: "npm:^5.1.1"
+    typescript: "npm:^5.4.5"
+  languageName: unknown
+  linkType: soft
+
 "@koda-rpc/parser@npm:0.0.1, @koda-rpc/parser@workspace:packages/parser":
   version: 0.0.0-use.local
   resolution: "@koda-rpc/parser@workspace:packages/parser"
   dependencies:
+    "@koda-rpc/common": "npm:0.0.1"
     typescript: "npm:^5.4.5"
   languageName: unknown
   linkType: soft

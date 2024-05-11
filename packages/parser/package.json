@@ -15,7 +15,11 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "tsc -w"
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@koda-rpc/common": "0.0.1"
   },
   "devDependencies": {
     "typescript": "^5.4.5"

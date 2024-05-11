@@ -1,4 +1,4 @@
-import { Schema } from "@koda-rpc/parser";
+import { Schema } from "@koda-rpc/common";
 import * as ts from 'typescript';
 import { match } from 'ts-pattern';
 
