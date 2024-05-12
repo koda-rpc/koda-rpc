@@ -1,4 +1,4 @@
-import { Schema, MessageType, MessageTypeBytes, DataTypeBytes } from "@koda-rpc/common";
+import { Schema, MessageType, MessageTypeBytes, DataTypeBytes, ServiceBytes } from "@koda-rpc/common";
 import { match } from "ts-pattern";
 import { validateParams } from "./validation";
 
@@ -76,13 +76,22 @@ export const serialize = async ({
     }
   });
 
+  const endByte = Buffer.alloc(1);
+  endByte.writeUInt8(ServiceBytes.EOL);
+  buffer = Buffer.concat([buffer, endByte]);
+
   return buffer;
 };
 
 const serializeObject = (obj: object): Buffer => {
   let buffer = Buffer.alloc(0);
 
-  Object.entries(obj).forEach(([key, value]) => {
+  const entries = Object.entries(obj);
+  entries.forEach(([key, value]) => {
+    // Количество ключей
+    const keysCountBuffer = Buffer.alloc(1);
+    keysCountBuffer.writeUint8(entries.length);
+    buffer = Buffer.concat([buffer, keysCountBuffer]);
     // Длина ключа
     const keyLengthBuffer = Buffer.alloc(1);
     keyLengthBuffer.writeUInt8(key.length);
