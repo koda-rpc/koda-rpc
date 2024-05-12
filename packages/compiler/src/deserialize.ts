@@ -83,7 +83,9 @@ const deserializeObject = (buffer: Buffer): { parsedObject: object; newIndex: nu
   let index = 0;
   const parsedObject: { [key: string]: any } = {};
 
-  while (index < buffer.length) {
+  // Читаем количество ключей
+  const keysCount = buffer[index++];
+  for (let keyNum = 0; keyNum < keysCount; keyNum++, index++){
     // Читаем длину ключа
     const keyLength = buffer[index++];
     // Читаем ключ
@@ -113,5 +115,5 @@ const deserializeObject = (buffer: Buffer): { parsedObject: object; newIndex: nu
     }
   }
 
-  return { parsedObject, newIndex: index };
+  return { parsedObject, newIndex: index - 1 };
 }

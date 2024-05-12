@@ -76,13 +76,22 @@ export const serialize = async ({
     }
   });
 
+  const endByte = Buffer.alloc(1);
+  endByte.writeUInt8(0xFF);
+  buffer = Buffer.concat([buffer, endByte]);
+
   return buffer;
 };
 
 const serializeObject = (obj: object): Buffer => {
   let buffer = Buffer.alloc(0);
 
-  Object.entries(obj).forEach(([key, value]) => {
+  const entries = Object.entries(obj);
+  entries.forEach(([key, value]) => {
+    // Количество ключей
+    const keysCountBuffer = Buffer.alloc(1);
+    keysCountBuffer.writeUint8(entries.length);
+    buffer = Buffer.concat([buffer, keysCountBuffer]);
     // Длина ключа
     const keyLengthBuffer = Buffer.alloc(1);
     keyLengthBuffer.writeUInt8(key.length);
