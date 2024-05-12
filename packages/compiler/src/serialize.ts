@@ -1,4 +1,4 @@
-import { Schema, MessageType, MessageTypeBytes, DataTypeBytes } from "@koda-rpc/common";
+import { Schema, MessageType, MessageTypeBytes, DataTypeBytes, ServiceBytes } from "@koda-rpc/common";
 import { match } from "ts-pattern";
 import { validateParams } from "./validation";
 
@@ -77,7 +77,7 @@ export const serialize = async ({
   });
 
   const endByte = Buffer.alloc(1);
-  endByte.writeUInt8(0xFF);
+  endByte.writeUInt8(ServiceBytes.EOL);
   buffer = Buffer.concat([buffer, endByte]);
 
   return buffer;
