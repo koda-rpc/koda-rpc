@@ -1,13 +1,20 @@
 svc PetService {
   getById(id: number): Pet;
+  findAll(): Pet[];
   getByOwner(owner: Owner): Pet;
   createPet(dto: Pet, foo: number): Pet;
+  addToys(petId: number, toys: Toy[]): Pet;
 }
 
 contract Pet {
   number id;
   string name;
   Owner owner;
+  Toy[] toys;
+}
+
+contract Toy {
+  string name;
 }
 
 contract Owner {

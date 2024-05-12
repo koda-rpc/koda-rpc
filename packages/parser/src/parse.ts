@@ -5,6 +5,7 @@ import {
   ParameterDeclaration,
   ServiceDeclaration,
   Schema,
+  ReturnTypeDeclaration,
 } from "@koda-rpc/common";
 import {
   contractRegex,
@@ -13,6 +14,7 @@ import {
   parameterRegex,
   serviceRegex,
 } from "./regex";
+import { checkArrayType } from "./utils";
 
 export const parseSchema = (schema: string): Schema => {
   const services: ServiceDeclaration[] = [];
@@ -27,7 +29,7 @@ export const parseSchema = (schema: string): Schema => {
     const methodsStr = match[2];
     while ((methodMatch = methodRegex.exec(methodsStr)) !== null) {
       const methodName = methodMatch[1];
-      const returnType = methodMatch[3];
+      let returnType = methodMatch[3];
       const parameters: ParameterDeclaration[] = [];
 
       let parameterMatch;
@@ -37,12 +39,29 @@ export const parseSchema = (schema: string): Schema => {
         let paramType = parameterMatch[2];
 
         const required = !paramName.includes('?');
-        paramName = paramName.replaceAll('?', '');
+        const [isArray, arrayDepth] = checkArrayType(paramType);
 
-        parameters.push(new ParameterDeclaration(paramName, paramType, required));
+        paramName = paramName.replaceAll('?', '');
+        paramType = paramType.replaceAll('[]', '');
+
+        parameters.push(new ParameterDeclaration(paramName, paramType, required, isArray, arrayDepth));
       }
 
-      methods.push(new MethodDeclaration(methodName, returnType, parameters));
+      const [isArray, arrayDepth] = checkArrayType(returnType);
+
+      returnType = returnType.replaceAll('[]', '');
+
+      methods.push(
+        new MethodDeclaration(
+          methodName,
+          new ReturnTypeDeclaration(
+            returnType,
+            isArray,
+            arrayDepth,
+          ),
+          parameters
+        ),
+      );
     }
 
     services.push(new ServiceDeclaration(serviceName, methods));
@@ -61,10 +80,13 @@ export const parseSchema = (schema: string): Schema => {
         let [type, name] = item.trim().replaceAll(';', '').split(' ').filter(symbol => symbol !== ' ');
 
         const required = !name.includes('?');
+        const [isArray, arrayDepth] = checkArrayType(type);
+
         name = name.replaceAll('?', '');
+        type = type.replaceAll('[]', '');
 
         acc.push(
-          new FieldDeclaration(name, type, required),
+          new FieldDeclaration(name, type, required, isArray, arrayDepth),
         );
 
         return acc;

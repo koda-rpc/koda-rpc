@@ -3,3 +3,4 @@ export { ContractDeclaration } from './contract';
 export { ParameterDeclaration } from './parameter';
 export { MethodDeclaration } from './method';
 export { ServiceDeclaration } from './service';
+export { ReturnTypeDeclaration } from './returnType';

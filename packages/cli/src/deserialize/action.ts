@@ -19,6 +19,8 @@ export const deserializeAction = (
     throw new Error(`${options.type} is invalid message type`);
   }
 
+  console.log(JSON.stringify(schema, null, 4));
+
   deserialize({
     buffer,
     messageType: messageType as MessageType,

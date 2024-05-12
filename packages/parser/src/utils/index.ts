@@ -1,0 +1,1 @@
+export { checkArrayType } from './checkArrayType';
