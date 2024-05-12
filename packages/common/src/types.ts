@@ -16,7 +16,7 @@ export enum MessageTypeBytes {
 }
 
 export enum DataTypeBytes {
-  INTEGER = 0x01,
+  NUMBER = 0x01,
   STRING = 0x02,
   BOOLEAN = 0x03,
   OBJECT = 0x04,
