@@ -2,6 +2,7 @@ import { DataTypeBytes, MessageType, MessageTypeBytes, Schema } from "@koda-rpc/
 import { validateParams } from "./validation";
 import { match } from "ts-pattern";
 import { IDeserializedData } from "./types";
+import { decompress } from "./compressor";
 
 interface IDeserializeOptions {
   buffer: Buffer;
@@ -14,7 +15,7 @@ export const deserialize = async ({
   schema,
 }: IDeserializeOptions): Promise<IDeserializedData> => {
   // Распаковываем данные с использованием zlib
-  const uncompressedBuffer = buffer;
+  const uncompressedBuffer = await decompress(buffer);
 
   let index = 0;
 

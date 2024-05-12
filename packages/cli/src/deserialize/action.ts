@@ -23,5 +23,5 @@ export const deserializeAction = (
     buffer,
     messageType: messageType as MessageType,
     schema,
-  }).then((res) => console.log(JSON.stringify(res)));
+  }).then((res) => console.log(JSON.stringify(res, null, 2)));
 }

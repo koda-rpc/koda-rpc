@@ -1,6 +1,7 @@
 import { Schema, MessageType, MessageTypeBytes, DataTypeBytes, ServiceBytes } from "@koda-rpc/common";
 import { match } from "ts-pattern";
 import { validateParams } from "./validation";
+import { compress } from "./compressor";
 
 export interface ISerializeOptions {
   callMethod: string;
@@ -15,12 +16,6 @@ export const serialize = async ({
   parameters,
   schema,
 }: ISerializeOptions) => {
-  console.log(JSON.stringify({
-    messageType,
-    callMethod,
-    parameters,
-  }, ));
-
   await validateParams(
     parameters,
     schema,
@@ -80,7 +75,7 @@ export const serialize = async ({
   endByte.writeUInt8(ServiceBytes.EOL);
   buffer = Buffer.concat([buffer, endByte]);
 
-  return buffer;
+  return compress(buffer);
 };
 
 const serializeObject = (obj: object): Buffer => {
