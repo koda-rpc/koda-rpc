@@ -1,1 +1,0 @@
-export { requestSerializer } from './requestSerializer';
